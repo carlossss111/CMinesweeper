@@ -1,2 +1,6 @@
 # Binaries
 bin/*
+
+# Vim
+compile_flags.txt
+

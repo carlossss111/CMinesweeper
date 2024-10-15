@@ -1,15 +1,19 @@
 # Daniel 2024
+EXECUTABLE_PATH = bin/cminesweeper
+
 PREFIX  = 
 CC	 	= gcc
-OPTS  	= -std=c17 -Wall -Wextra
-INCLUDE = -Iinclude/
-NAME 	= cminesweeper
+CFLAGS  = -std=c17 -Wall 
+LDFLAGS = -lncurses
+DFLAGS  = 
+SRC     = src/*.c
+INCLUDE = include/
 
 compile:
-	$(PREFIX)$(CC) src/*.c -o bin/$(NAME) $(INCLUDE) $(OPTS)
+	$(PREFIX)$(CC) $(CFLAGS) $(DFLAGS) $(LDFLAGS) $(SRC) -I$(INCLUDE) -o $(EXECUTABLE_PATH)
 
 run: compile
-	./bin/$(NAME)
+	$(EXECUTABLE_PATH) $(ARGS)
 
 clean:
 	rm -r bin/*
