@@ -5,6 +5,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 
+#include "common.h"
 #include "graphics.h"
 
 #define HELP_MESSAGE "./cminesweeper [option]\n\
