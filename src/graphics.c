@@ -8,6 +8,7 @@ void init_graphics(){
         endwin();
         printf("It is the 243rd decade and your terminal does not " 
                "support colour. Tough luck.\n");
+        close_logger();
         exit(1);
     }
     init_color_pairs();
@@ -36,5 +37,3 @@ void draw_cell(int cell_state, Vec vec){
     attroff(A_BOLD);
     attroff(COLOR_PAIR(cell_state));
 }
-    
-

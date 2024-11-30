@@ -15,6 +15,9 @@ compile:
 run: compile
 	$(EXECUTABLE_PATH) $(ARGS)
 
+memcheck: compile
+	/usr/bin/valgrind $(EXECUTABLE_PATH) $(ARGS)
+
 clean:
 	rm -r bin/*
 
