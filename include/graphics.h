@@ -1,9 +1,11 @@
 #pragma once
 
 #include <curses.h>
-#include <stdlib.h>
 
 #include "common.h"
+#include "logging.h"
+#include "board.h"
+#include "game.h"
 
 #define init_color_pairs() \
     start_color();\
@@ -18,7 +20,8 @@
     clear()
 #define is_valid_color(x) (x >= 1 && x <= 8)
 
-void graphics_init();
-void graphics_finish();
-void draw_cell(int cell_state, Position pos);
+void draw_board(Board* board, Game* game);
+
+void init_graphics();
+void finish_graphics();
 

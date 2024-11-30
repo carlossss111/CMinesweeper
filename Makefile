@@ -3,7 +3,7 @@ EXECUTABLE_PATH = bin/cminesweeper
 
 PREFIX  = 
 CC	 	= gcc
-CFLAGS  = -std=c17 -Wall 
+CFLAGS  = -std=c17 -Wall -g
 LDFLAGS = -lncurses
 DFLAGS  = 
 SRC     = src/*.c

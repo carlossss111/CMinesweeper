@@ -1,7 +1,7 @@
 #include "graphics.h"
 
 // Init the ncurses window and colours
-void graphics_init(){
+void init_graphics(){
     initscr();
 
     if(has_colors() == FALSE){
@@ -11,15 +11,19 @@ void graphics_init(){
         exit(1);
     }
     init_color_pairs();
+
+    log(Info, "Graphics initialised.");
 } 
 
 // Close the ncurses window
-void graphics_finish(){
+void finish_graphics(){
     endwin();
+
+    log(Info, "Graphics cleaned up.");
 }
 
 // Draw a cell by passing in the number of adjacent mines
-void draw_cell(int cell_state, Position pos){
+void draw_cell(int cell_state, Vec vec){
     if (!is_valid_color(cell_state)){
         return;
     }
@@ -27,7 +31,7 @@ void draw_cell(int cell_state, Position pos){
     attron(COLOR_PAIR(cell_state));
     attron(A_BOLD);
 
-    mvaddch(pos.x, pos.y, cell_state + '0');
+    mvaddch(vec.x, vec.y, cell_state + '0');
 
     attroff(A_BOLD);
     attroff(COLOR_PAIR(cell_state));

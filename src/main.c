@@ -1,19 +1,22 @@
 #include "main.h"
-#include "graphics.h"
 
 int main(int argc, char** argv) {
+    init_logger();
     int c;
 
     // Command line args
-    while((c = getopt(argc, argv, "sh:w:")) != -1){
+    while((c = getopt(argc, argv, "hsH:W:")) != -1){
         switch(c) {
+            case 'h':
+                printf(HELP_MESSAGE);
+                return 0;
             case 's': // Screensaver
                 printf("STUB \n");
                 break;
-            case 'w': // Width
+            case 'W': // Width
                 printf("STUB %ld\n", strtol(optarg, NULL, 10));
                 break;
-            case 'h': // Height
+            case 'H': // Height
                 printf("STUB %ld\n", strtol(optarg, NULL, 10));
                 break;
             case '?': // Unrecognised
@@ -22,29 +25,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    // test code
-    graphics_init();
-    Position pos;
-    pos.x = 10;
-    pos.y = 0;
-    draw_cell(1, pos);
-    pos.y++;
-    draw_cell(2, pos);
-    pos.y++;
-    draw_cell(3, pos);
-    pos.y++;
-    draw_cell(4, pos);
-    pos.y++;
-    draw_cell(5, pos);
-    pos.y++;
-    draw_cell(6, pos);
-    pos.y++;
-    draw_cell(7, pos);
-    pos.y++;
-    draw_cell(8, pos);
-    refresh();
-    for(;;);
-    graphics_finish();
+    close_logger();
     return 0;
 }
-

@@ -4,3 +4,5 @@ bin/*
 # Vim
 compile_flags.txt
 
+# VScode
+.vscode
