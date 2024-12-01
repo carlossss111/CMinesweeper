@@ -36,7 +36,6 @@ void print(Board* board){
     strcat(msg, "\n");
 
     log(Debug, msg);
-    printf(msg);
 }
 
 void generate_mines(Board* board){

@@ -79,11 +79,28 @@ int main(int argc, char** argv) {
 
     // Inits
     Board board;
+    Graphics graphics;
     init_board(&board, width, height, difficulty);
-
+    init_graphics(&graphics);
     board.print(&board);
 
+    // Validate board size can be printed
+    if(!graphics.term_is_large_enough(&graphics, &board)){
+        finish_graphics(&graphics);
+        free_board(&board);
+        close_logger();
+        printf("The board was too large for the terminal window!\n");
+        return 1;
+    }
+
+    // Game Loop
+    for(;;){
+        graphics.draw_board(&graphics, &board, NULL);
+    }
+    
+
     // Frees
+    finish_graphics(&graphics);
     free_board(&board);
     close_logger();
 
