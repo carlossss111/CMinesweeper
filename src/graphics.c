@@ -29,6 +29,16 @@ void draw_cell(Vec vec, int cell_state){
     attroff(COLOR_PAIR(cell_state));
 }
 
+void to_real_vec(struct Graphics* graphics, Board* board, Vec* vec){
+    vec->x = vec->x + (graphics->term_width - board->width)/2;
+    vec->y = vec->y*2 + (graphics->term_height - board->height*2)/2;
+}
+
+void to_board_vec(struct Graphics* graphics, Board* board, Vec* vec){
+    vec->x = vec->x - (graphics->term_width - board->width)/2;
+    vec->y = vec->y/2 - (graphics->term_height - board->height*2)/4;
+}
+
 void draw_board(Graphics* graphics, Board* board, Game* game){
     // Check for terminal resizing
     int new_term_width, new_term_height;
@@ -42,10 +52,9 @@ void draw_board(Graphics* graphics, Board* board, Game* game){
     // Draw board
     for(int i = 0; i < board->width; i++){
         for(int j = 0; j < board->height; j++){
-            int real_x = i + (graphics->term_width - board->width)/2;
-            int real_y = j*2 + (graphics->term_height - board->height*2)/2;
-
-            draw_cell((Vec) {real_x, real_y}, board->visible_state[i][j]);
+            Vec vec = {i, j};
+            graphics->to_real_vec(graphics, board, &vec);
+            draw_cell(vec, board->visible_state[i][j]);
         }
     }
     refresh();
@@ -73,14 +82,18 @@ void init_graphics(Graphics* graphics){
     graphics->term_width = width;
     graphics->term_height = height;
     graphics->draw_board = draw_board;
+    graphics->to_real_vec = to_real_vec;
+    graphics->to_board_vec = to_board_vec;
     graphics->term_is_large_enough = term_is_large_enough;
 
-    log(Info, "Graphics initialised.");
+    char msg[256];
+    sprintf(msg, "Graphics initialised with width=%d, height=%d", width, height);
+    log(Info, msg);
 } 
 
 void finish_graphics(Graphics* graphics){
     // Close Ncurses window
     endwin();
-
+    delwin(stdscr);
     log(Info, "Graphics cleaned up.");
 }

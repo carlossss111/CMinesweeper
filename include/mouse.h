@@ -5,5 +5,5 @@
 #include "common.h"
 #include "logging.h"
 
-void mouse_init();
+void init_mouse();
 void get_mouse(Vec* vec);

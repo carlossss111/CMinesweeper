@@ -30,11 +30,15 @@ typedef struct Graphics {
 
     bool (*term_is_large_enough) (struct Graphics* self, Board* board);
     void (*draw_board) (struct Graphics* self, Board* board, Game* game);
+    void (*to_real_vec) (struct Graphics* self, Board* board, Vec* vec);
+    void (*to_board_vec) (struct Graphics* self, Board* board, Vec* vec);
 }Graphics;
 
 
 bool term_is_large_enough (struct Graphics* self, Board* board);
-void draw_board(Graphics* graphics, Board* board, Game* game);
+void draw_board(Graphics* self, Board* board, Game* game);
+void to_real_vec(struct Graphics* self, Board* board, Vec* vec);
+void to_board_vec(struct Graphics* self, Board* board, Vec* vec);
 
 void init_graphics(Graphics* graphics);
 void finish_graphics(Graphics* graphics);

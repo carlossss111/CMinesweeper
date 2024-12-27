@@ -80,8 +80,10 @@ int main(int argc, char** argv) {
     // Inits
     Board board;
     Graphics graphics;
+    Vec mouse_pos;
     init_board(&board, width, height, difficulty);
     init_graphics(&graphics);
+    init_mouse();
     board.print(&board);
 
     // Validate board size can be printed
@@ -96,9 +98,13 @@ int main(int argc, char** argv) {
     // Game Loop
     for(;;){
         graphics.draw_board(&graphics, &board, NULL);
+        get_mouse(&mouse_pos);
+        graphics.to_board_vec(&graphics, &board, &mouse_pos);
+        if (board.position_is_valid(&board, mouse_pos)){
+            board.uncover(&board, mouse_pos);
+        }
     }
     
-
     // Frees
     finish_graphics(&graphics);
     free_board(&board);

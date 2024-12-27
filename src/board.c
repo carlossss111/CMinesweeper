@@ -7,6 +7,9 @@ int flag(Board* board, Vec vec){
 
 int uncover(Board* board, Vec vec){
     board->visible_state[vec.x][vec.y] = board->real_state[vec.x][vec.y];
+    char msg[128];
+    sprintf(msg, "State uncovered at: %d %d", vec.x, vec.y);
+    log(Debug, msg);
     return board->real_state[vec.x][vec.y];
 }
 
@@ -36,6 +39,10 @@ void print(Board* board){
     strcat(msg, "\n");
 
     log(Debug, msg);
+}
+
+bool position_is_valid(Board* board, Vec p){
+    return p.x >= 0 && p.x < board->width && p.y >= 0 && p.y < board->height;
 }
 
 void generate_mines(Board* board){
@@ -73,6 +80,7 @@ void init_board(Board* board, int width, int height, int difficulty){
     board->uncover = uncover;
     board->uncover_all = uncover_all;
     board->print = print;
+    board->position_is_valid = position_is_valid;
 
     int num_of_cells = board->width * board->height;
     const float diff_modifer = 7.8f; // higher skews the difficulty down
