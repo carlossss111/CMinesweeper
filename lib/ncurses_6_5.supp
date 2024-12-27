@@ -1,0 +1,48 @@
+# NCurses Valgrind Suppressions
+
+# NCurses appears to have memory leaks because it yields
+# memory to the virtual terminal after the application has
+# finished running.
+
+{
+   <NCURSES_INITSCR>
+   Memcheck:Leak
+   ...
+   fun:initscr
+   fun:init_graphics
+}
+{
+   <NCURSES_INIT_PAIR>
+   Memcheck:Leak
+   ...
+   fun:_nc_init_pair
+   fun:init_graphics
+}
+{
+   <NCURSES_WREFRESH>
+   Memcheck:Leak
+   ...
+   fun:wrefresh
+   fun:draw_board
+}
+{
+   <NCURSES_MOUSEMASK>
+   Memcheck:Leak
+   ...
+   fun:mousemask_sp
+   fun:init_mouse
+}
+{
+   <NCURSES_KEYPAD>
+   Memcheck:Leak
+   ...
+   fun:_nc_keypad
+   fun:init_mouse
+}
+{
+   <NCURSES_START_COLOUR>
+   Memcheck:Leak
+   ...
+   fun:start_color_sp
+   fun:init_graphics
+}
