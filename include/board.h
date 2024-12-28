@@ -24,6 +24,7 @@ typedef struct Board{
 
     int (*flag) (struct Board* self, Vec position);
     int (*uncover) (struct Board* self, Vec position);
+    int (*ff_uncover) (struct Board* self, Vec position);
     void (*uncover_all) (struct Board* self);
     void (*print) (struct Board* self);
     bool (*is_valid) (struct Board* self, Vec position);
@@ -32,6 +33,7 @@ typedef struct Board{
 
 int flag(Board* board, Vec position);
 int uncover(Board* board, Vec position);
+int ff_uncover(Board* board, Vec position);
 void uncover_all(Board* board);
 void print(Board* board);
 bool is_valid(Board* board, Vec position);

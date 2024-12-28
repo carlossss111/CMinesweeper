@@ -10,33 +10,30 @@ int flag(Board* board, Vec vec){
     return Flag;
 }
 
-int check_cell(Board* board, Vec vec, int x_offset, int y_offset){
-    int x = vec.x + x_offset;
-    int y = vec.y + y_offset;
-
+int check_cell(Board* board, Vec vec){
     // Check if out of bounds
-    if (x < 0 || x >= board->width){
+    if (vec.x < 0 || vec.x >= board->width){
         return 0;
     }
-    if (y < 0 || y >= board->height){
+    if (vec.y < 0 || vec.y >= board->height){
         return 0;
     }
     
     // Check if a mine 
-    return board->real_state[x][y] == Mine;
+    return board->real_state[vec.x][vec.y] == Mine;
 }
 
 int get_surrounding(Board* board, Vec vec){
     int score = 0;
 
-    score += check_cell(board, vec, 0,   1); //top
-    score += check_cell(board, vec, 1,   1); //top-right
-    score += check_cell(board, vec, 1,   0); //right
-    score += check_cell(board, vec, 1,  -1); //bottom-right
-    score += check_cell(board, vec, 0,  -1); //bottom
-    score += check_cell(board, vec, -1, -1); //bottom-left
-    score += check_cell(board, vec, -1,  0); //left
-    score += check_cell(board, vec, -1,  1); //top-left
+    score += check_cell(board, (Vec) {vec.x,   vec.y+1}); //top
+    score += check_cell(board, (Vec) {vec.x+1, vec.y+1}); //top-right
+    score += check_cell(board, (Vec) {vec.x+1, vec.y  }); //right
+    score += check_cell(board, (Vec) {vec.x+1, vec.y-1}); //bottom-right
+    score += check_cell(board, (Vec) {vec.x,   vec.y-1}); //bottom
+    score += check_cell(board, (Vec) {vec.x-1, vec.y-1}); //bottom-left
+    score += check_cell(board, (Vec) {vec.x-1, vec.y  }); //left
+    score += check_cell(board, (Vec) {vec.x-1, vec.y+1}); //top-left
 
     return score;
 }
@@ -61,6 +58,37 @@ int uncover(Board* board, Vec vec){
     sprintf(msg, "State uncovered at: %d %d, value=%d", vec.x, vec.y, state);
     log(Debug, msg);
     return state;
+}
+
+int ff_uncover(Board* board, Vec vec){
+    // base case: out of bounds
+    if (vec.x < 0 || vec.x >= board->width){
+        return 0;
+    }
+    if (vec.y < 0 || vec.y >= board->height){
+        return 0;
+    }
+
+    // base case: is already uncovered
+    if (!board->is_hidden(board, vec)){
+        return  Hidden;
+    }
+
+    // uncover self
+    int cell_value = uncover(board, vec);
+
+    // recurse if a 0
+    if (cell_value == Empty){
+        ff_uncover(board, (Vec) {vec.x,   vec.y+1}); //top
+        ff_uncover(board, (Vec) {vec.x+1, vec.y+1}); //top-right
+        ff_uncover(board, (Vec) {vec.x+1, vec.y  }); //right
+        ff_uncover(board, (Vec) {vec.x+1, vec.y-1}); //bottom-right
+        ff_uncover(board, (Vec) {vec.x,   vec.y-1}); //bottom
+        ff_uncover(board, (Vec) {vec.x-1, vec.y-1}); //bottom-left
+        ff_uncover(board, (Vec) {vec.x-1, vec.y  }); //left
+        ff_uncover(board, (Vec) {vec.x-1, vec.y+1}); //top-left
+    }
+    return cell_value;
 }
 
 void uncover_all(Board* board){
@@ -132,6 +160,7 @@ void init_board(Board* board, int width, int height, int difficulty){
     board->height = height;
     board->flag = flag;
     board->uncover = uncover;
+    board->ff_uncover =ff_uncover;
     board->uncover_all = uncover_all;
     board->print = print;
     board->is_valid = is_valid;

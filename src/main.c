@@ -106,13 +106,19 @@ int main(int argc, char** argv) {
         graphics.to_board_vec(&graphics, &board, &mouse_pos);
 
         // Handle mouse input
+        static int last_uncovered = Empty;
         if (board.is_valid(&board, mouse_pos) && board.is_hidden(&board, mouse_pos)) {
             if (right_clicked){
                 board.flag(&board, mouse_pos);
             }
             else{
-                board.uncover(&board, mouse_pos);
+                last_uncovered = board.ff_uncover(&board, mouse_pos);
             }
+        }
+
+        // Game lose condition
+        if(last_uncovered == Mine){
+            board.uncover_all(&board);
         }
     }
     
