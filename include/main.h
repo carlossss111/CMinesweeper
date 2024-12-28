@@ -12,4 +12,4 @@
     -h          = print this help message\n\
     -W <number> = start with board of width <number>\n\
     -H <number> = start with board of height <height>\n\
-    -D <1-9>    = difficulty, 1 = minimum, 9 = maximum\n"
+    -D <1-5>    = difficulty, 1 = minimum, 5 = maximum\n"

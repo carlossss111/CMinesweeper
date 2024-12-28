@@ -20,7 +20,7 @@
     init_pair(8, COLOR_BLACK, COLOR_BLACK);\
     init_pair(Hidden, COLOR_WHITE, COLOR_WHITE);\
     init_pair(Flag, COLOR_RED, COLOR_WHITE);\
-    init_pair(Mine, COLOR_RED, COLOR_WHITE);\
+    init_pair(Mine, COLOR_WHITE, COLOR_RED);\
     clear()
 #define is_valid_color(x) (x >= Empty && x <= Mine)
 

@@ -26,14 +26,16 @@ typedef struct Board{
     int (*uncover) (struct Board* self, Vec position);
     void (*uncover_all) (struct Board* self);
     void (*print) (struct Board* self);
-    bool (*position_is_valid) (struct Board* self, Vec position);
+    bool (*is_valid) (struct Board* self, Vec position);
+    bool (*is_hidden) (struct Board* self, Vec position);
 }Board;
 
 int flag(Board* board, Vec position);
 int uncover(Board* board, Vec position);
 void uncover_all(Board* board);
 void print(Board* board);
-bool position_is_valid(Board* board, Vec position);
+bool is_valid(Board* board, Vec position);
+bool is_hidden(Board* board, Vec position);
 
 void init_board(Board* unitinitialised_board, int width, int height, int difficulty);
 void free_board(Board* finished_board);

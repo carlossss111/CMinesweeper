@@ -81,6 +81,7 @@ int main(int argc, char** argv) {
     Board board;
     Graphics graphics;
     Vec mouse_pos;
+    bool right_clicked;
     init_board(&board, width, height, difficulty);
     init_graphics(&graphics);
     init_mouse();
@@ -97,11 +98,21 @@ int main(int argc, char** argv) {
 
     // Game Loop
     for(;;){
+        // Draw
         graphics.draw_board(&graphics, &board, NULL);
-        get_mouse(&mouse_pos);
+
+        // Get mouse position
+        get_mouse(&mouse_pos, &right_clicked);
         graphics.to_board_vec(&graphics, &board, &mouse_pos);
-        if (board.position_is_valid(&board, mouse_pos)){
-            board.uncover(&board, mouse_pos);
+
+        // Handle mouse input
+        if (board.is_valid(&board, mouse_pos) && board.is_hidden(&board, mouse_pos)) {
+            if (right_clicked){
+                board.flag(&board, mouse_pos);
+            }
+            else{
+                board.uncover(&board, mouse_pos);
+            }
         }
     }
     

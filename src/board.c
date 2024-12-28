@@ -1,16 +1,66 @@
 #include "board.h"
 
 int flag(Board* board, Vec vec){
-    board->visible_state[vec.x][vec.y] = Flag;
+    if (board->visible_state[vec.x][vec.y] != Flag){
+        board->visible_state[vec.x][vec.y] = Flag;
+    }
+    else {
+        board->visible_state[vec.x][vec.y] = Hidden;
+    }
     return Flag;
 }
 
+int check_cell(Board* board, Vec vec, int x_offset, int y_offset){
+    int x = vec.x + x_offset;
+    int y = vec.y + y_offset;
+
+    // Check if out of bounds
+    if (x < 0 || x >= board->width){
+        return 0;
+    }
+    if (y < 0 || y >= board->height){
+        return 0;
+    }
+    
+    // Check if a mine 
+    return board->real_state[x][y] == Mine;
+}
+
+int get_surrounding(Board* board, Vec vec){
+    int score = 0;
+
+    score += check_cell(board, vec, 0,   1); //top
+    score += check_cell(board, vec, 1,   1); //top-right
+    score += check_cell(board, vec, 1,   0); //right
+    score += check_cell(board, vec, 1,  -1); //bottom-right
+    score += check_cell(board, vec, 0,  -1); //bottom
+    score += check_cell(board, vec, -1, -1); //bottom-left
+    score += check_cell(board, vec, -1,  0); //left
+    score += check_cell(board, vec, -1,  1); //top-left
+
+    return score;
+}
+
 int uncover(Board* board, Vec vec){
-    board->visible_state[vec.x][vec.y] = board->real_state[vec.x][vec.y];
+    // Check if flag (skip)
+    if (board->visible_state[vec.x][vec.y] == Flag){
+        return Flag;
+    }
+
+    // Check if mine
+    if (board->real_state[vec.x][vec.y] == Mine){
+        board->visible_state[vec.x][vec.y] = Mine;
+        return Mine;
+    }
+
+    // Otherwise, uncover the visible state with a number
+    int state = get_surrounding(board, vec);
+    board->visible_state[vec.x][vec.y] = state;
+
     char msg[128];
-    sprintf(msg, "State uncovered at: %d %d", vec.x, vec.y);
+    sprintf(msg, "State uncovered at: %d %d, value=%d", vec.x, vec.y, state);
     log(Debug, msg);
-    return board->real_state[vec.x][vec.y];
+    return state;
 }
 
 void uncover_all(Board* board){
@@ -41,8 +91,12 @@ void print(Board* board){
     log(Debug, msg);
 }
 
-bool position_is_valid(Board* board, Vec p){
+bool is_valid(Board* board, Vec p){
     return p.x >= 0 && p.x < board->width && p.y >= 0 && p.y < board->height;
+}
+
+bool is_hidden(Board* board, Vec p){
+    return board->visible_state[p.x][p.y] == Hidden || board->visible_state[p.x][p.y] == Flag;
 }
 
 void generate_mines(Board* board){
@@ -80,7 +134,8 @@ void init_board(Board* board, int width, int height, int difficulty){
     board->uncover = uncover;
     board->uncover_all = uncover_all;
     board->print = print;
-    board->position_is_valid = position_is_valid;
+    board->is_valid = is_valid;
+    board->is_hidden = is_hidden;
 
     int num_of_cells = board->width * board->height;
     const float diff_modifer = 7.8f; // higher skews the difficulty down
