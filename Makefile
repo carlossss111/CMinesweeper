@@ -8,7 +8,7 @@ LDFLAGS = -lncurses
 DFLAGS  = 
 SRC     = src/*.c
 INCLUDE = include/
-MFLAGS  = --suppressions=lib/ncurses_6_5.supp
+MFLAGS  = --suppressions=misc/ncurses_6_5.supp
 
 compile:
 	$(PREFIX)$(CC) $(CFLAGS) $(DFLAGS) $(LDFLAGS) $(SRC) -I$(INCLUDE) -o $(EXECUTABLE_PATH)
@@ -21,4 +21,10 @@ memcheck: compile
 
 clean:
 	rm -r bin/*
+
+install: compile
+	sudo ln $(EXECUTABLE_PATH) /usr/local/bin/cminesweeper
+
+uninstall:
+	sudo rm /usr/local/bin/cminesweeper
 
