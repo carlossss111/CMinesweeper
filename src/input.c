@@ -1,4 +1,4 @@
-#include "mouse.h"
+#include "input.h"
 #include <ncurses.h>
 
 void init_mouse(){
@@ -7,9 +7,10 @@ void init_mouse(){
     return;
 }
 
-void get_mouse(Vec* vec, bool* right_click){
+void get_input(Vec* vec, bool* right_click, int* key){
     MEVENT event;
     int c = getch();
+    *key = -1;
 
     // Populate vector with raw position
     if (c == KEY_MOUSE){
@@ -28,5 +29,10 @@ void get_mouse(Vec* vec, bool* right_click){
             vec->y = event.x;
             vec->x = event.y;
         }
+    }
+
+    // Else populate key pess
+    else{
+        *key = c;
     }
 }

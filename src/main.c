@@ -77,11 +77,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // Inits
+    // Declarations and inits
     Board board;
     Graphics graphics;
     Vec mouse_pos;
     bool right_clicked;
+    int key;
+
     init_board(&board, width, height, difficulty);
     init_graphics(&graphics);
     init_mouse();
@@ -101,8 +103,8 @@ int main(int argc, char** argv) {
         // Draw
         graphics.draw_board(&graphics, &board, NULL);
 
-        // Get mouse position
-        get_mouse(&mouse_pos, &right_clicked);
+        // Get mouse position and/or key press
+        get_input(&mouse_pos, &right_clicked, &key);
         graphics.to_board_vec(&graphics, &board, &mouse_pos);
 
         // Handle mouse input
@@ -116,7 +118,15 @@ int main(int argc, char** argv) {
             }
         }
 
-        // Game lose condition
+        // Handle key input
+        if (key == Q_KEY || key == ESC_KEY){
+            break;
+        }
+        else if  (key == R_KEY){
+
+        }
+
+        // Check game is not lost
         if(last_uncovered == Mine){
             board.uncover_all(&board);
         }

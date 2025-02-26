@@ -5,7 +5,7 @@
 #include "common.h"
 #include "logging.h"
 #include "graphics.h"
-#include "mouse.h"
+#include "input.h"
 #include "board.h"
 
 #define HELP_MESSAGE "./cminesweeper [option]\n\
