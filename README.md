@@ -22,9 +22,11 @@ For help run with the `-h` option.
 cminesweeper -h
 ```
 
-The game is played with the left and right mouse-buttons just like the original minesweeper. Press ESC to exit.
+The game is played with the left and right mouse-buttons just like the original minesweeper. Press ESC or q to exit.
 
 ![Minesweeper GIF](misc/cminesweeper-1.gif)
+
+Press the r key to reset the board and play again.
 
 ## Terminal Requirements
 You will need a colour and mouse-operable terminal. Linux terminal emulators like Gnome-Terminal and XTerm supply this functionality. I would love to try on an real old terminal one day too, but this is yet untested.

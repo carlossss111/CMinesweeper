@@ -119,6 +119,11 @@ void print(Board* board){
     log(Debug, msg);
 }
 
+void reset(Board* board){
+    free_board(board);
+    init_board(board, board->width, board->height, board->difficulty);
+}
+
 bool is_valid(Board* board, Vec p){
     return p.x >= 0 && p.x < board->width && p.y >= 0 && p.y < board->height;
 }
@@ -158,11 +163,13 @@ void init_board(Board* board, int width, int height, int difficulty){
     // Assign member variables
     board->width = width;
     board->height = height;
+    board->difficulty = difficulty;
     board->flag = flag;
     board->uncover = uncover;
     board->ff_uncover =ff_uncover;
     board->uncover_all = uncover_all;
     board->print = print;
+    board->reset = reset;
     board->is_valid = is_valid;
     board->is_hidden = is_hidden;
 

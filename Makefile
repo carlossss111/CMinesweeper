@@ -23,7 +23,7 @@ clean:
 	rm -r bin/*
 
 install: compile
-	sudo ln $(EXECUTABLE_PATH) /usr/local/bin/cminesweeper
+	sudo ln -f $(EXECUTABLE_PATH) /usr/local/bin/cminesweeper
 
 uninstall:
 	sudo rm /usr/local/bin/cminesweeper

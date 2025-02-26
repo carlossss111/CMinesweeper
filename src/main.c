@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
     // Declarations and inits
     Board board;
     Graphics graphics;
-    Vec mouse_pos;
+    Vec mouse_pos = {0,0};
     bool right_clicked;
     int key;
 
@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         graphics.to_board_vec(&graphics, &board, &mouse_pos);
 
         // Handle mouse input
-        static int last_uncovered = Empty;
+        int last_uncovered = Empty;
         if (board.is_valid(&board, mouse_pos) && board.is_hidden(&board, mouse_pos)) {
             if (right_clicked){
                 board.flag(&board, mouse_pos);
@@ -123,7 +123,8 @@ int main(int argc, char** argv) {
             break;
         }
         else if  (key == R_KEY){
-
+            board.reset(&board);
+            board.print(&board);
         }
 
         // Check game is not lost

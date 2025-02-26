@@ -21,12 +21,14 @@ typedef struct Board{
     int width;
     int height;
     int mines_num;
+    int difficulty;
 
     int (*flag) (struct Board* self, Vec position);
     int (*uncover) (struct Board* self, Vec position);
     int (*ff_uncover) (struct Board* self, Vec position);
     void (*uncover_all) (struct Board* self);
     void (*print) (struct Board* self);
+    void (*reset) (struct Board* self);
     bool (*is_valid) (struct Board* self, Vec position);
     bool (*is_hidden) (struct Board* self, Vec position);
 }Board;
@@ -36,6 +38,7 @@ int uncover(Board* board, Vec position);
 int ff_uncover(Board* board, Vec position);
 void uncover_all(Board* board);
 void print(Board* board);
+void reset(Board* board);
 bool is_valid(Board* board, Vec position);
 bool is_hidden(Board* board, Vec position);
 
